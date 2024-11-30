@@ -1,3 +1,5 @@
+![expo-sqlite-reactive](assets/expo-sqlite-reactive.png)
+
 - [expo-sqlite-reactive](#expo-sqlite-reactive)
   - [Características](#características)
   - [Instalación](#instalación)
@@ -13,14 +15,55 @@
       - [Insertar y Consultar Datos](#insertar-y-consultar-datos)
   - [Comparación con Realm](#comparación-con-realm)
   - [Ejemplo Completo](#ejemplo-completo)
-  - [Hacerca del autor](#hacerca-del-autor)
-  - [Licencia](#licencia)
+- [Métodos de `expo-sqlite-reactive`](#métodos-de-expo-sqlite-reactive)
+  - [Métodos Principales](#métodos-principales)
+    - [**`initialize(databaseName: string): SQLiteManager`**](#initializedatabasename-string-sqlitemanager)
+    - [**`createTable(tableName: string, data: ColumnDefinition): Promise<boolean>`**](#createtabletablename-string-data-columndefinition-promiseboolean)
+    - [**`dropTable(tableName: string): Promise<boolean | null>`**](#droptabletablename-string-promiseboolean--null)
+    - [**`insert(tableName: string, data: KeyValueData): Promise<TypeReturnQuery | null>`**](#inserttablename-string-data-keyvaluedata-promisetypereturnquery--null)
+    - [**`update(tableName: string, whereClause: object, data: KeyValueData): Promise<number | null>`**](#updatetablename-string-whereclause-object-data-keyvaluedata-promisenumber--null)
+    - [**`delete(tableName: string, whereClause?: object): Promise<number | null>`**](#deletetablename-string-whereclause-object-promisenumber--null)
+    - [**`select<T>(tableName: string, columns?: string[], whereClause?: object, sort?: { [key: string]: number }): Promise<T[] | null>`**](#selectttablename-string-columns-string-whereclause-object-sort--key-string-number--promiset--null)
+  - [Métodos Avanzados](#métodos-avanzados)
+    - [**`createIndex(tableName: string, columnName: string): Promise<void>`**](#createindextablename-string-columnname-string-promisevoid)
+    - [**`addTableColumns(tableName: string, changes: ColumnDefinition): Promise<boolean>`**](#addtablecolumnstablename-string-changes-columndefinition-promiseboolean)
+    - [**`getAllTables(): Promise<tableInternalSchema[]>`**](#getalltables-promisetableinternalschema)
+    - [**`getTableSchema(tableName: string): Promise<tableRowSchema[]>`**](#gettableschematablename-string-promisetablerowschema)
+    - [**`validateTableSchema(tableName: string, expectedSchema: ColumnDefinition): Promise<boolean>`**](#validatetableschematablename-string-expectedschema-columndefinition-promiseboolean)
+  - [Métodos de Reactividad](#métodos-de-reactividad)
+    - [**`useWatchTable(tableName: string, listener: () => void): void`**](#usewatchtabletablename-string-listener---void-void)
+    - [**`useQuery<T>(tableName: string, columns?: string[], whereClause?: object, sort?: { [key: string]: number }): T[]`**](#usequeryttablename-string-columns-string-whereclause-object-sort--key-string-number--t)
+    - [**`translateMongoJsonToSql(query: object): { whereStatement: string; values: any[] }`**](#translatemongojsontosqlquery-object--wherestatement-string-values-any-)
+- [Ejemplos](#ejemplos)
+  - [Crear tabla e índices](#crear-tabla-e-índices)
+  - [Uso de `useQuery`](#uso-de-usequery)
+  - [Escucha de cambios en Tablas](#escucha-de-cambios-en-tablas)
+- [Hacerca del autor](#hacerca-del-autor)
+- [Licencia](#licencia)
 
-![expo-sqlite-reactive](assets/expo-sqlite-reactive.png)
+
+[![npm version](https://img.shields.io/npm/v/expo-sqlite-reactive.svg?style=flat)](https://www.npmjs.com/package/expo-sqlite-reactive)
+[![Downloads](https://img.shields.io/npm/dm/expo-sqlite-reactive.svg)](https://www.npmjs.com/package/expo-sqlite-reactive)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+[![Node Version](https://img.shields.io/node/v/expo-sqlite-reactive.svg)](https://nodejs.org/)
+[![Documentation](https://img.shields.io/badge/docs-available-blue.svg)](https://tu-proyecto-docs.com)
+[![Expo SDK](https://img.shields.io/badge/expo-%5E52.0.0-blue.svg)](https://expo.dev/)
+[![Last Commit](https://img.shields.io/github/last-commit/stock42/expo-sqlite-reactive.svg)](https://github.com/stock42/expo-sqlite-reactive/commits)
+[![GitHub Stars](https://img.shields.io/github/stars/stock42/expo-sqlite-reactive.svg?style=social)](https://github.com/stock42/expo-sqlite-reactive)
+
+
+
+
 
 # expo-sqlite-reactive
 
 `expo-sqlite-reactive` es una solución que extiende la funcionalidad de `expo-sqlite` para proporcionar una forma reactiva de trabajar con bases de datos SQLite en aplicaciones Expo y React Native. Este paquete permite crear tablas, realizar operaciones CRUD y mantener actualizados los datos en tu UI mediante el hook `useQuery`.
+Esto permite crear aplicaciones offline de manera rápida, simple y estable.
+[Stock42](https://stock42.com) utiliza esta librería para todas sus aplicaciones.
+Recomendamos [S42](https://s42ui.com) para desarrollar aplicaciones móviles de manera mucho mas rápida.
+
+
 
 ## Características
 
@@ -221,12 +264,240 @@ export default function App() {
 }
 ```
 
-## Hacerca del autor
+# Métodos de `expo-sqlite-reactive`
+
+Este apartado contiene todos los métodos disponibles en la librería `expo-sqlite-reactive`, con una descripción detallada y ejemplos de uso.
+
+
+## Métodos Principales
+
+### **`initialize(databaseName: string): SQLiteManager`**
+Inicializa la base de datos SQLite y configura el modo `WAL` para mejorar el rendimiento.
+
+**Parámetros:**
+- `databaseName`: Nombre de la base de datos.
+
+**Ejemplo:**
+```typescript
+SQLiteManager.initialize('mydatabase.db');
+```
+
+
+### **`createTable(tableName: string, data: ColumnDefinition): Promise<boolean>`**
+Crea una tabla en la base de datos si no existe.
+
+**Parámetros:**
+- `tableName`: Nombre de la tabla.
+- `data`: Objeto que define las columnas y sus tipos de datos.
+
+**Ejemplo:**
+```typescript
+await SQLiteManager.createTable('users', {
+  userId: 'TEXT PRIMARY KEY',
+  userName: 'TEXT',
+  createdAt: 'INTEGER',
+});
+```
+
+
+### **`dropTable(tableName: string): Promise<boolean | null>`**
+Elimina una tabla de la base de datos si existe.
+
+**Parámetros:**
+- `tableName`: Nombre de la tabla.
+
+**Ejemplo:**
+```typescript
+await SQLiteManager.dropTable('users');
+```
+
+
+### **`insert(tableName: string, data: KeyValueData): Promise<TypeReturnQuery | null>`**
+Inserta un registro en una tabla.
+
+**Parámetros:**
+- `tableName`: Nombre de la tabla.
+- `data`: Objeto que contiene los datos a insertar.
+
+**Ejemplo:**
+```typescript
+await SQLiteManager.insert('users', {
+  userId: '1',
+  userName: 'John Doe',
+  createdAt: Date.now(),
+});
+```
+
+### **`update(tableName: string, whereClause: object, data: KeyValueData): Promise<number | null>`**
+Actualiza registros en una tabla según una condición.
+
+**Parámetros:**
+- `tableName`: Nombre de la tabla.
+- `whereClause`: Objeto que define las condiciones de actualización.
+- `data`: Objeto que contiene los valores a actualizar.
+
+**Ejemplo:**
+```typescript
+await SQLiteManager.update('users', { userId: '1' }, { userName: 'Jane Doe' });
+```
+
+
+### **`delete(tableName: string, whereClause?: object): Promise<number | null>`**
+Elimina registros en una tabla según una condición.
+
+**Parámetros:**
+- `tableName`: Nombre de la tabla.
+- `whereClause`: Objeto que define las condiciones de eliminación.
+
+**Ejemplo:**
+```typescript
+await SQLiteManager.delete('users', { userId: '1' });
+```
+
+
+### **`select<T>(tableName: string, columns?: string[], whereClause?: object, sort?: { [key: string]: number }): Promise<T[] | null>`**
+Realiza una consulta en una tabla.
+
+**Parámetros:**
+- `tableName`: Nombre de la tabla.
+- `columns`: Array de nombres de columnas a seleccionar.
+- `whereClause`: Objeto que define las condiciones de la consulta.
+- `sort`: Objeto que define el orden de los resultados.
+
+**Ejemplo:**
+```typescript
+const users = await SQLiteManager.select('users', ['userId', 'userName'], { userName: { $like: '%John%' } });
+```
+
+
+## Métodos Avanzados
+
+### **`createIndex(tableName: string, columnName: string): Promise<void>`**
+Crea un índice en una columna para mejorar el rendimiento de las consultas.
+
+**Ejemplo:**
+```typescript
+await SQLiteManager.createIndex('users', 'userName');
+```
+
+### **`addTableColumns(tableName: string, changes: ColumnDefinition): Promise<boolean>`**
+Agrega nuevas columnas a una tabla existente.
+
+**Ejemplo:**
+```typescript
+await SQLiteManager.addTableColumns('users', {
+  middleName: 'TEXT',
+  isActive: 'INTEGER',
+});
+```
+
+
+### **`getAllTables(): Promise<tableInternalSchema[]>`**
+Devuelve una lista de todas las tablas de la base de datos.
+
+**Ejemplo:**
+```typescript
+const tables = await SQLiteManager.getAllTables();
+console.log(tables);
+```
+
+
+### **`getTableSchema(tableName: string): Promise<tableRowSchema[]>`**
+Obtiene el esquema de una tabla específica.
+
+**Ejemplo:**
+```typescript
+const schema = await SQLiteManager.getTableSchema('users');
+console.log(schema);
+```
+
+### **`validateTableSchema(tableName: string, expectedSchema: ColumnDefinition): Promise<boolean>`**
+Valida si el esquema de una tabla coincide con un esquema esperado.
+
+**Ejemplo:**
+```typescript
+const isValid = await SQLiteManager.validateTableSchema('users', {
+  userId: 'TEXT',
+  userName: 'TEXT',
+});
+console.log(isValid);
+```
+
+## Métodos de Reactividad
+
+### **`useWatchTable(tableName: string, listener: () => void): void`**
+Escucha cambios en una tabla y ejecuta una función cuando ocurren.
+
+**Ejemplo:**
+```typescript
+useWatchTable('users', () => {
+  console.log('La tabla "users" ha cambiado.');
+});
+```
+
+### **`useQuery<T>(tableName: string, columns?: string[], whereClause?: object, sort?: { [key: string]: number }): T[]`**
+Consulta datos de una tabla y actualiza la UI automáticamente cuando hay cambios.
+
+**Ejemplo:**
+```typescript
+const [users, error] = useQuery('users', ['userId', 'userName'], { userName: { $like: '%John%' } });
+```
+
+### **`translateMongoJsonToSql(query: object): { whereStatement: string; values: any[] }`**
+Convierte un objeto de consulta al estilo MongoDB en una consulta SQL.
+
+**Ejemplo:**
+```typescript
+const { whereStatement, values } = translateMongoJsonToSql({
+  name: { $like: '%John%' },
+  age: { $gte: 18 },
+});
+```
+
+# Ejemplos
+
+## Crear tabla e índices
+```ts
+await SQLiteManager.createTable('users', {
+  userId: 'TEXT PRIMARY KEY',
+  userName: 'TEXT',
+  createdAt: 'INTEGER',
+});
+
+await SQLiteManager.createIndex('users', 'userName');
+
+```
+
+
+## Uso de `useQuery`
+
+```ts
+function UserList() {
+  const [users, error] = useQuery('users', ['userId', 'userName'], { userName: { $like: 'John%' } });
+
+  if (error) return <Text>Error loading users: {error.message}</Text>;
+
+  return (
+    <View>
+      {users.map(user => (
+        <Text key={user.userId}>{user.userName}</Text>
+      ))}
+    </View>
+  );
+}
+```
+## Escucha de cambios en Tablas
+```ts
+useWatchTable('users', () => {
+  console.log('Table "users" has changed');
+});
+```
+
+# Hacerca del autor
 Librería desarrollada por [César Casas](https://www.linkedin.com/in/cesarcasas) / [Stock42](https://stock42.com/).
 
 ![Stock42](assets/stock42-logo-with-title-horizontal-play-blanco.png)
 
-
-## Licencia
+# Licencia
 
 MIT License. Ver el archivo [LICENSE](./LICENSE) para más detalles.
