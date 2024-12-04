@@ -1,6 +1,7 @@
 ![expo-sqlite-reactive](assets/expo-sqlite-reactive.png)
 
 - [expo-sqlite-reactive](#expo-sqlite-reactive)
+  - [Comparación con Realm](#comparación-con-realm)
   - [Características](#características)
   - [Instalación](#instalación)
   - [Uso Básico](#uso-básico)
@@ -13,7 +14,7 @@
     - [Ejemplos de Consultas Complejas](#ejemplos-de-consultas-complejas)
       - [Consulta con Condiciones](#consulta-con-condiciones)
       - [Insertar y Consultar Datos](#insertar-y-consultar-datos)
-  - [Comparación con Realm](#comparación-con-realm)
+  - [Comparación con Realm](#comparación-con-realm-1)
   - [Ejemplo Completo](#ejemplo-completo)
 - [Métodos de `expo-sqlite-reactive`](#métodos-de-expo-sqlite-reactive)
   - [Métodos Principales](#métodos-principales)
@@ -38,6 +39,7 @@
   - [Crear tabla e índices](#crear-tabla-e-índices)
   - [Uso de `useQuery`](#uso-de-usequery)
   - [Escucha de cambios en Tablas](#escucha-de-cambios-en-tablas)
+- [Roadmap](#roadmap)
 - [Hacerca del autor](#hacerca-del-autor)
 - [Licencia](#licencia)
 
@@ -62,6 +64,15 @@
 Esto permite crear aplicaciones offline de manera rápida, simple y estable.
 [Stock42](https://stock42.com) utiliza esta librería para todas sus aplicaciones.
 Recomendamos [S42](https://s42ui.com) para desarrollar aplicaciones móviles de manera mucho mas rápida.
+
+
+## Comparación con Realm
+| Característica       | expo-sqlite-reactive      | Realm                    |
+|----------------------|---------------------------|--------------------------|
+| Peso de la Librería  | Ligero                    | Pesado                  |
+| Reactividad          | Sí, con `useQuery`        | Sí, integrado            |
+| Compatibilidad       | SQLite nativo             | Limitado a base Realm    |
+| Facilidad de Uso     | Sencillo                  | Complejo para principiantes |
 
 
 
@@ -492,6 +503,21 @@ useWatchTable('users', () => {
   console.log('Table "users" has changed');
 });
 ```
+
+# Roadmap
+- [ ] Soporte para transacciones.
+- [ ] Agregar soporte para Server Remoto de Sincronización.
+- [ ] Agregar soporte para exportar a CSV toda la base de datos.
+- [ ] Agregar soporte para exportar a JSON toda la base de datos.
+- [ ] Agregar soporte para exportar a Excel toda la base de datos.
+- [ ] Agregar soporte para importar desde CSV.
+- [ ] Agregar soporte para importar desde JSON.
+- [ ] Agregar soporte para importar desde Excel.
+- [ ] Agregar soporte para actualizar la base de datos en segundo plano.
+- [ ] Agregar soporte para actualizar la base de datos en segundo plano con transacciones.
+- [ ] Agregar soporte para enviar la DB a un servidor remoto.
+
+
 
 # Hacerca del autor
 Librería desarrollada por [César Casas](https://www.linkedin.com/in/cesarcasas) / [Stock42](https://stock42.com/).

@@ -1,6 +1,7 @@
 ![expo-sqlite-reactive](assets/expo-sqlite-reactive.png)
 
 - [expo-sqlite-reactive](#expo-sqlite-reactive)
+  - [Comparación con Realm](#comparación-con-realm)
   - [Features](#features)
   - [Installation](#installation)
   - [Basic Usage](#basic-usage)
@@ -38,6 +39,7 @@
   - [Create Table and Indexes](#create-table-and-indexes)
   - [Using `useQuery`](#using-usequery)
   - [Listening for Changes in Tables](#listening-for-changes-in-tables)
+- [Roadmap](#roadmap)
 - [About the Author](#about-the-author)
 - [License](#license)
 
@@ -64,6 +66,14 @@ It enables the creation of offline applications quickly, simply, and reliably.
 [Stock42](https://stock42.com) uses this library for all its applications.
 We recommend [S42](https://s42ui.com) for faster mobile application development.
 
+
+## Comparación con Realm
+| Feature       | expo-sqlite-reactive      | Realm                    |
+|----------------------|---------------------------|--------------------------|
+| Library Size  | Lightweight                    | Heavy                  |
+| Reactivity          | Yes, with `useQuery`        | Yes, integrated            |
+| Compatibility       | Native SQLite             | Limited to Realm database    |
+| Ease of Use	     | Simple                  | Complex for beginners |
 
 
 ## Features
@@ -494,6 +504,20 @@ useWatchTable('users', () => {
   console.log('Table "users" has changed');
 });
 ```
+
+# Roadmap
+- [ ] Support for transactions.
+- [ ] Add support for remote server synchronization.
+- [ ] Add support to export the entire database to CSV.
+- [ ] Add support to export the entire database to JSON.
+- [ ] Add support to export the entire database to Excel.
+- [ ] Add support to import data from CSV.
+- [ ] Add support to import data from JSON.
+- [ ] Add support to import data from Excel.
+- [ ] Add support for background database updates.
+- [ ] Add support for background database updates with transactions.
+- [ ] Add support to send the database to a remote server.
+
 
 # About the Author
 Library developed by [César Casas](https://www.linkedin.com/in/cesarcasas) / [Stock42](https://stock42.com/).
