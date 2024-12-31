@@ -24,7 +24,7 @@
     - [**`insert(tableName: string, data: KeyValueData): Promise<TypeReturnQuery | null>`**](#inserttablename-string-data-keyvaluedata-promisetypereturnquery--null)
     - [**`update(tableName: string, whereClause: object, data: KeyValueData): Promise<number | null>`**](#updatetablename-string-whereclause-object-data-keyvaluedata-promisenumber--null)
     - [**`delete(tableName: string, whereClause?: object): Promise<number | null>`**](#deletetablename-string-whereclause-object-promisenumber--null)
-    - [**`select<T>(tableName: string, columns?: string[], whereClause?: object, sort?: { [key: string]: number }): Promise<T[] | null>`**](#selectttablename-string-columns-string-whereclause-object-sort--key-string-number--promiset--null)
+    - [**`select<T>(tableName: string, columns?: string[], whereClause?: object, sort?: { [key: string]: number }, limit?: number, offset?: number): Promise<T[] | null>`**](#selectttablename-string-columns-string-whereclause-object-sort--key-string-number--limit-number-offset-number-promiset--null)
   - [Advanced Methods](#advanced-methods)
     - [**`createIndex(tableName: string, columnName: string): Promise<void>`**](#createindextablename-string-columnname-string-promisevoid)
     - [**`addTableColumns(tableName: string, changes: ColumnDefinition): Promise<boolean>`**](#addtablecolumnstablename-string-changes-columndefinition-promiseboolean)
@@ -367,7 +367,7 @@ await SQLiteManager.delete('users', { userId: '1' });
 ```
 
 
-### **`select<T>(tableName: string, columns?: string[], whereClause?: object, sort?: { [key: string]: number }): Promise<T[] | null>`**
+### **`select<T>(tableName: string, columns?: string[], whereClause?: object, sort?: { [key: string]: number }, limit?: number, offset?: number): Promise<T[] | null>`**
 Performs a query on a table.
 
 **Parameters:**
@@ -375,10 +375,12 @@ Performs a query on a table.
 - `columns`: An array of column names to select.
 - `whereClause`: An object that defines the query conditions.
 - `sort`: An object that defines the sorting order of the results.
+- `limit`: An integer that defines the maximum number of results to return.
+- `offset`: An integer that defines the number of results to skip.
 
 **Example:**
 ```typescript
-const users = await SQLiteManager.select('users', ['userId', 'userName'], { userName: { $like: '%John%' } });
+const users = await SQLiteManager.select('users', ['userId', 'userName'], { userName: { $like: '%John%' } }, undefined, 10, 0);
 ```
 
 

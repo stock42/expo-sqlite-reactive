@@ -270,6 +270,8 @@ export class SQLiteManager {
 		columns: string[] = ['*'],
 		whereClause?: object,
 		sort?: { [key: string]: number },
+		limit?: number,
+		offset?: number,
 	): Promise<T[] | null> {
 		let whereSentence = ''
 		let whereArgs = []
@@ -288,8 +290,14 @@ export class SQLiteManager {
 			orderByClause = `ORDER BY ${sortClauses.join(', ')}`
 		}
 
-		const query = `SELECT ${columns.join(', ')} FROM ${tableName} ${whereSentence} ${orderByClause}`
+		let query = `SELECT ${columns.join(', ')} FROM ${tableName} ${whereSentence} ${orderByClause}`
 		try {
+			if (limit) {
+				query += ` LIMIT ${limit}`
+			}
+			if (offset) {
+				query += ` OFFSET ${offset}`
+			}
 			const result = await this.db.getAllAsync<T>(query, whereArgs)
 			return result
 		} catch (err) {
@@ -325,13 +333,15 @@ export function useQuery<T>(
 	columns: string[] = ['*'],
 	whereClause?: object,
 	sort?: { [key: string]: number },
+	limit?: number,
+	offset?: number,
 ): T[] {
 	const [data, setData] = useState<T[]>([])
 	const [error, setError] = useState<any>()
 	const eventName = `change-${tableName}`
 	const fetchData = async () => {
 		try {
-			const result = await SQLiteManager.select<T>(tableName, columns, whereClause, sort)
+			const result = await SQLiteManager.select<T>(tableName, columns, whereClause, sort, limit, offset)
 			setData(result ?? [])
 		} catch (err) {
 			setError(err)

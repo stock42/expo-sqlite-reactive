@@ -1,51 +1,50 @@
 {
     "name": "expo-sqlite-reactive",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "A reactive wrapper for Expo/expo-sqlite that enables reactivity in database operations with event-driven updates.",
     "main": "src/index.ts",
     "types": "src/index.ts",
     "scripts": {
-      "lint": "eslint src --ext .ts",
-      "test": "jest"
+        "lint": "eslint src --ext .ts",
+        "test": "jest"
     },
     "repository": {
-      "type": "git",
-      "url": "https://github.com/stock42/expo-sqlite-reactive.git"
+        "type": "git",
+        "url": "https://github.com/stock42/expo-sqlite-reactive.git"
     },
     "keywords": [
-      "expo",
-      "sqlite",
-      "reactive",
-      "expo-sqlite",
-      "database",
-      "react-native",
-      "reactivity",
-      "realm",
-      "offline applications"
+        "expo",
+        "sqlite",
+        "reactive",
+        "expo-sqlite",
+        "database",
+        "react-native",
+        "reactivity",
+        "realm",
+        "offline applications"
     ],
     "author": "César Casas",
     "license": "MIT",
     "dependencies": {
-      "expo-sqlite": "^15.0.1",
-      "react": "18.3.1",
-      "expo": "52.0.11"
+        "expo": "52.0.11",
+        "expo-sqlite": "^15.0.5",
+        "react": "^19.0.0"
     },
     "devDependencies": {
-      "typescript": "^4.0.0",
-      "tslib": "^2.0.0",
-      "eslint": "^7.0.0",
-      "jest": "^26.0.0",
-      "@types/jest": "^26.0.0"
+        "typescript": "^4.0.0",
+        "tslib": "^2.0.0",
+        "eslint": "^7.0.0",
+        "jest": "^26.0.0",
+        "@types/jest": "^26.0.0"
     },
     "peerDependencies": {
-      "expo": "~52.0.11",
-      "expo-sqlite": "^15.0.1"
+        "expo": "~52.0.11",
+        "expo-sqlite": "^15.0.1"
     },
     "files": [
-      "src"
+        "src"
     ],
     "engines": {
-      "node": ">=20"
+        "node": ">=20"
     }
-  }
-  
+}
