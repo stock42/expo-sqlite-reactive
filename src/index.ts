@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import * as SQLite from 'expo-sqlite'
-import { EventEmitter } from 'events'
+import { EventEmitter } from 'expo'
 
 type tableRowSchema = {
 	cid: number
@@ -36,7 +36,7 @@ type TypeReturnQuery = {
 }
 
 const eventEmitter = new EventEmitter()
-eventEmitter.setMaxListeners(100)
+
 
 export function translateMongoJsonToSql(query: object) {
 	const operatorsMap: { [key: string]: string } = {
@@ -317,7 +317,7 @@ export function useWatchTable(tableName: string, listener: () => void) {
 
 		if (!firstTime) {
 			console.info('useWatchTable first time called')
-			eventEmitter.on(eventName, handleChange)
+			eventEmitter.addListener(eventName, handleChange)
 			setFirstTime(true)
 			listener()
 		}
@@ -354,7 +354,7 @@ export function useQuery<T>(
 			listener()
 		}
 
-		eventEmitter.on(eventName, handleEvent)
+		eventEmitter.addListener(eventName, handleEvent)
 
 		fetchData()
 		return () => {

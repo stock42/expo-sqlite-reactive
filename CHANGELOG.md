@@ -53,3 +53,8 @@
 ### Manejo Eficiente de Eventos:
 
 - Uso de eventEmitter.setMaxListeners(100) para evitar limitaciones en listeners simultáneos.
+
+## Version 0.0.5
+
+### Added event emitter from expo package.
+### Update expo and expo-sqlite dependencies.
