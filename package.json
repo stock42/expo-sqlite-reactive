@@ -1,6 +1,6 @@
 {
     "name": "expo-sqlite-reactive",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "A reactive wrapper for Expo/expo-sqlite that enables reactivity in database operations with event-driven updates.",
     "main": "src/index.ts",
     "types": "src/index.ts",
@@ -26,8 +26,8 @@
     "author": "César Casas",
     "license": "MIT",
     "dependencies": {
-        "expo": "52.0.38",
-        "expo-sqlite": "^15.1.2",
+        "expo": "53.0.19",
+        "expo-sqlite": "^15.2.14",
         "react": "^19.0.0"
     },
     "devDependencies": {
@@ -38,8 +38,8 @@
         "@types/jest": "^26.0.0"
     },
     "peerDependencies": {
-        "expo": "~52.0.38",
-        "expo-sqlite": "^15.1.2"
+        "expo": "~53.0.19",
+        "expo-sqlite": "^15.2.14"
     },
     "files": [
         "src"

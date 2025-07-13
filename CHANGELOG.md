@@ -56,5 +56,6 @@
 
 ## Version 0.0.5
 
+- Update expo and expo-sqlite dependencies.
 ### Added event emitter from expo package.
 ### Update expo and expo-sqlite dependencies.
